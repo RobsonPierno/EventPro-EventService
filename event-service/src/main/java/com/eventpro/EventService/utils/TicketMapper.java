@@ -13,11 +13,11 @@ import com.eventpro.EventService.model.Ticket;
     })
 public interface TicketMapper {
 
-    @Mapping(target = "type", expression = "java(dto.status() != null ? TicketType.valueOf(dto.type().toUpperCase()) : null)")
+    @Mapping(target = "type", expression = "java(dto.type() != null ? TicketType.valueOf(dto.type().toUpperCase()) : null)")
     @Mapping(target = "event", expression = "java(dto.eventId() != null ? new Event(dto.eventId()) : null)")
     Ticket toEntity(TicketDTO dto);
 
-    @Mapping(target = "type", expression = "java(entity.getStatus() != null ? entity.getStatus().name() : null)")
+    @Mapping(target = "type", expression = "java(entity.getType() != null ? entity.getType().name() : null)")
     @Mapping(target = "eventId", expression = "java(entity.getEvent() != null ? entity.getEvent().getId() : null)")
     TicketDTO toDto(Ticket entity);
 }

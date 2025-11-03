@@ -6,6 +6,12 @@ import jakarta.persistence.Embeddable;
 @Embeddable
 public class Organizer {
 	
+	public Organizer() { }
+	
+	public Organizer(final Integer id) {
+		this.id = id;
+	}
+	
 	@Column(name = "organizer_id")
 	private Integer id;
 	
