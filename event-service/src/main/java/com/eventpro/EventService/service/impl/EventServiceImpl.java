@@ -14,10 +14,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eventpro.EventService.dto.EventDTO;
 import com.eventpro.EventService.enums.StatusEnum;
 import com.eventpro.EventService.model.Event;
+import com.eventpro.EventService.model.Organizer;
 import com.eventpro.EventService.repository.EventRepository;
 import com.eventpro.EventService.repository.EventSpecifications;
 import com.eventpro.EventService.service.EventService;
 import com.eventpro.EventService.utils.EventMapper;
+import com.eventpro.OrganizerService.client.OrganizerClient;
+import com.eventpro.OrganizerService.dto.OrganizerDTO;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -29,12 +32,25 @@ public class EventServiceImpl implements EventService {
 	
 	@Autowired
 	private EventMapper mapper;
+	
+	@Autowired
+	private OrganizerClient organizerClient;
 
 	@Override
 	public void create(final EventDTO eventDTO) {
 		log.debug("create({})", eventDTO);
 		
+		OrganizerDTO organizerDTO = this.organizerClient.findById(eventDTO.organizerId());
+		
+		if (organizerDTO == null) {
+			throw new RuntimeException();
+		}
+		
 		Event event = this.mapper.toEntity(eventDTO);
+		
+		Organizer org = event.getOrganizer();
+		org.setName(organizerDTO.name());
+		
 		this.repository.save(event);
 	}
 
