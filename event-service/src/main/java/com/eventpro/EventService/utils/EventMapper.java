@@ -16,11 +16,11 @@ public interface EventMapper {
 
     @Mapping(target = "status", expression = "java(dto.status() != null ? StatusEnum.valueOf(dto.status().toUpperCase()) : null)")
     @Mapping(target = "organizer", expression = "java(dto.organizerId() != null ? new Organizer(dto.organizerId()) : null)")
-    @Mapping(target = "ticket", expression = "java(dto.ticketId() != null ? new Ticket(dto.ticketId()) : null)")
+    @Mapping(target = "tickets", expression = "java(dto.ticketsIds() != null ? dto.ticketsIds().stream().map(Ticket::new).toList() : new java.util.ArrayList<>())")
     Event toEntity(EventDTO dto);
 
     @Mapping(target = "status", expression = "java(entity.getStatus() != null ? entity.getStatus().name() : null)")
     @Mapping(target = "organizerId", expression = "java(entity.getOrganizer() != null ? entity.getOrganizer().getId() : null)")
-    @Mapping(target = "ticketId", expression = "java(entity.getTicket() != null ? entity.getTicket().getId() : null)")
+    @Mapping(target = "ticketsIds", expression = "java(entity.getTickets() != null ? entity.getTickets().stream().map(Ticket::getId).toList() : new java.util.ArrayList<>())")
     EventDTO toDto(Event entity);
 }

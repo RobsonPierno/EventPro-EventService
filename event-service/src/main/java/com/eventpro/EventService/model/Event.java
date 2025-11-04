@@ -2,6 +2,8 @@ package com.eventpro.EventService.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.eventpro.EventService.enums.StatusEnum;
 
@@ -12,7 +14,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Event extends Auditing {
@@ -45,8 +47,8 @@ public class Event extends Auditing {
 	@Embedded
 	private Organizer organizer;
 	
-	@OneToOne(mappedBy = "event", cascade = CascadeType.ALL)
-	private Ticket ticket;
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+	private List<Ticket> tickets = new ArrayList<>();
 
 	public Integer getId() {
 		return id;
@@ -120,11 +122,11 @@ public class Event extends Auditing {
 		this.organizer = organizer;
 	}
 	
-	public Ticket getTicket() {
-		return ticket;
+	public List<Ticket> getTickets() {
+		return tickets;
 	}
 
-	public void setTicket(Ticket ticket) {
-		this.ticket = ticket;
+	public void setTickets(List<Ticket> tickets) {
+		this.tickets = tickets;
 	}
 }
