@@ -42,10 +42,6 @@ public class EventServiceImpl implements EventService {
 		
 		OrganizerDTO organizerDTO = this.organizerClient.findById(eventDTO.organizerId());
 		
-		if (organizerDTO == null) {
-			throw new RuntimeException();
-		}
-		
 		Event event = this.mapper.toEntity(eventDTO);
 		
 		Organizer org = event.getOrganizer();
