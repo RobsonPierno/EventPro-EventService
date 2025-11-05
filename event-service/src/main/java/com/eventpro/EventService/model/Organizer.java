@@ -8,8 +8,9 @@ public class Organizer {
 	
 	public Organizer() { }
 	
-	public Organizer(final Integer id) {
+	public Organizer(final Integer id, final String name) {
 		this.id = id;
+		this.name = name;
 	}
 	
 	@Column(name = "organizer_id")
