@@ -14,4 +14,6 @@ public interface EventService {
 	public EventDTO findById(final Integer id);
 	
 	public EventDTO cancel(final Integer id);
+	
+	public Long countParticipants(final Integer id);
 }

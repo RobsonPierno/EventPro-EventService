@@ -18,6 +18,7 @@ import com.eventpro.EventService.model.Organizer;
 import com.eventpro.EventService.repository.EventRepository;
 import com.eventpro.EventService.repository.EventSpecifications;
 import com.eventpro.EventService.service.EventService;
+import com.eventpro.EventService.stream.ParticipantCheckinStream;
 import com.eventpro.EventService.utils.EventMapper;
 import com.eventpro.OrganizerService.client.OrganizerClient;
 import com.eventpro.OrganizerService.dto.OrganizerDTO;
@@ -35,10 +36,13 @@ public class EventServiceImpl implements EventService {
 	
 	@Autowired
 	private OrganizerClient organizerClient;
+	
+	@Autowired
+	private ParticipantCheckinStream participantCheckinStream;
 
 	@Override
 	public void create(final EventDTO eventDTO) {
-		log.debug("create({})", eventDTO);
+		log.info("create({})", eventDTO);
 		
 		OrganizerDTO organizerDTO = this.organizerClient.findById(eventDTO.organizerId());
 		
@@ -52,7 +56,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public List<EventDTO> findAll(final String status, final Integer organizerId, final LocalDate limitDate) {
-		log.debug("findAll({}, {}, {})", status, organizerId, limitDate);
+		log.info("findAll({}, {}, {})", status, organizerId, limitDate);
 		
         var spec = Specification.where(EventSpecifications.hasStatus(status))
                 				.and(EventSpecifications.hasOrganizerId(organizerId))
@@ -65,7 +69,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public EventDTO findById(final Integer id) {
-		log.debug("findById({})", id);
+		log.info("findById({})", id);
 		
 		EventDTO event = this.repository.findById(id)
 							.map(e -> this.mapper.toDto(e))
@@ -76,13 +80,23 @@ public class EventServiceImpl implements EventService {
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED)
 	public EventDTO cancel(final Integer id) {
-		log.debug("cancel({})", id);
+		log.info("cancel({})", id);
 		
 		Event event = this.repository.findById(id).orElseThrow(RuntimeException::new);
 		
 		event.setStatus(StatusEnum.CANCELED);
 		
 		return this.mapper.toDto(event);
+	}
+
+	@Override
+	public Long countParticipants(Integer id) {
+		log.info("countParticipants({})", id);
+		
+		Long count = this.participantCheckinStream.getParticipantsCount(id);
+		log.info("{} participants in the event {}", count, id);
+		
+		return count;
 	}
 
 }

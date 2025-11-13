@@ -29,6 +29,9 @@ public interface EventClient {
 	@GetMapping("/{id}")
 	public EventDTO findById(@PathVariable final Integer id);
 	
-	@GetMapping("/cancel")
-	public EventDTO cancel(final Integer id);
+	@GetMapping("/{id}/cancel")
+	public EventDTO cancel(@PathVariable final Integer id);
+	
+	@GetMapping("/{id}/count")
+	public Long countParticipants(@PathVariable final Integer id);
 }

@@ -33,7 +33,10 @@ spring:
           type:
             trace: true
 
-logging:
-  level:
-    root: DEBUG
-    org.hibernate.SQL: DEBUG
+  kafka:
+    bootstrap-servers: kafka:9092
+
+kafka:
+  topic:
+    participant:
+      checkedin: participant.checked.in

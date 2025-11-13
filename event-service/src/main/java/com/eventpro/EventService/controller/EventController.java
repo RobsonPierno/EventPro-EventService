@@ -41,4 +41,10 @@ public class EventController implements EventClient {
 		return event;
 	}
 
+	@Override
+	public Long countParticipants(Integer id) {
+		Long count = this.service.countParticipants(id);
+		return count;
+	}
+
 }
