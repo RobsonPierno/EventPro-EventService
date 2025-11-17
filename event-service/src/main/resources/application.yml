@@ -35,8 +35,11 @@ spring:
 
   kafka:
     bootstrap-servers: kafka:9092
+    consumer:
+      group-id: event-group
 
 kafka:
   topic:
     participant:
       checkedin: participant.checked.in
+    alert: system.alerts
