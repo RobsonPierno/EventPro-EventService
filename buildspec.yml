@@ -4,9 +4,15 @@ phases:
   pre_build:
     commands:
       - echo "Downloading private JARs from S3..."
+      - mkdir -p libs
+      - mkdir -p ~/.m2/repository/com/eventpro/OrganizerService/0.0.1-SNAPSHOT/
+      - mkdir -p ~/.m2/repository/com/eventpro/AttendeeService/0.0.1-SNAPSHOT/
+      
       - aws s3 cp s3://$S3_BUCKET/maven/event-client-0.0.1-SNAPSHOT.jar ./libs/
       - aws s3 cp s3://$S3_BUCKET/maven/organizer-client-0.0.1-SNAPSHOT.jar ./libs/
       - aws s3 cp s3://$S3_BUCKET/maven/attendee-client-0.0.1-SNAPSHOT.jar ./libs/
+      - aws s3 cp s3://$S3_BUCKET/maven/AttendeeService-0.0.1-SNAPSHOT.pom ~/.m2/repository/com/eventpro/AttendeeService/0.0.1-SNAPSHOT/AttendeeService-0.0.1-SNAPSHOT.pom
+      - aws s3 cp s3://$S3_BUCKET/maven/OrganizerService-0.0.1-SNAPSHOT.pom ~/.m2/repository/com/eventpro/OrganizerService/0.0.1-SNAPSHOT/OrganizerService-0.0.1-SNAPSHOT.pom
 
       - echo "Installing private JARs in local Maven repository..."
       - mvn install:install-file -Dfile=libs/event-client-0.0.1-SNAPSHOT.jar -DgroupId=com.eventpro -DartifactId=event-client -Dversion=0.0.1-SNAPSHOT -Dpackaging=jar
